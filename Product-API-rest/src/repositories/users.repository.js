@@ -22,7 +22,7 @@ class UsersRepository {
       age: doc.age,
       cart,
       role: doc.role,
-      products: doc.products || [],
+      pets: doc.pets || [],
     };
   }
 
@@ -50,6 +50,15 @@ class UsersRepository {
   async create(userData) {
     const doc = await this.usersDao.create(userData);
     return this.#toEntity(doc);
+  }
+
+  async createMany(usersData) {
+    const docs = await this.usersDao.createMany(usersData);
+    return docs.map((doc) => this.#toEntity(doc));
+  }
+
+  async addPet(userId, petId) {
+    return this.#toEntity(await this.usersDao.addPet(userId, petId));
   }
 
   async update(id, fields) {

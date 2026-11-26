@@ -31,6 +31,25 @@ class UsersDao {
     return UsersModel.findById(user._id).select("-password").lean();
   }
 
+  async createMany(usersData) {
+    const users = await UsersModel.insertMany(usersData);
+    return users.map((user) => {
+      const doc = user.toObject();
+      delete doc.password;
+      return doc;
+    });
+  }
+
+  async addPet(userId, petId) {
+    const user = await UsersModel.findByIdAndUpdate(
+      userId,
+      { $addToSet: { pets: petId } },
+      { new: true, runValidators: true }
+    ).select("-password").lean();
+    if (!user) throw new Error("Usuario no encontrado");
+    return user;
+  }
+
   async update(id, fields) {
     const user = await UsersModel.findById(id);
     if (!user) throw new Error("Usuario no encontrado");

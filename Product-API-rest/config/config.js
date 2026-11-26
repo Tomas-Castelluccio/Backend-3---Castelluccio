@@ -20,19 +20,33 @@ const readString = (name, fallback) => {
 };
 
 const readNumber = (name, fallback) => {
-  const raw = readString(name, undefined);
-  if (raw === undefined) return fallback;
+  const raw = process.env[name];
+  if (raw === undefined || raw.trim() === "") {
+    if (fallback === undefined) {
+      throw new ConfigurationError(`Falta la variable de entorno ${name}`);
+    }
+    return fallback;
+  }
   const value = Number(raw);
-  if (Number.isNaN(value)) {
+  if (!Number.isFinite(value)) {
     throw new ConfigurationError(`${name} debe ser un número, recibí "${raw}"`);
   }
   return value;
 };
 
 const readBoolean = (name, fallback) => {
-  const raw = readString(name, undefined);
-  if (raw === undefined) return fallback;
-  return ["1", "true", "yes"].includes(raw.toLowerCase());
+  const raw = process.env[name];
+  if (raw === undefined || raw.trim() === "") {
+    if (fallback === undefined) {
+      throw new ConfigurationError(`Falta la variable de entorno ${name}`);
+    }
+    return fallback;
+  }
+  const normalized = raw.trim().toLowerCase();
+  if (!["1", "true", "yes", "0", "false", "no"].includes(normalized)) {
+    throw new ConfigurationError(`${name} debe ser un booleano (true/false)`);
+  }
+  return ["1", "true", "yes"].includes(normalized);
 };
 
 const NODE_ENV = readString("NODE_ENV", "development");

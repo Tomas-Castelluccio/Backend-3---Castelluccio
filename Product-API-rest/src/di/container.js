@@ -1,6 +1,8 @@
 const UsersRepository = require("../repositories/users.repository");
 const CartsRepository = require("../repositories/carts.repository");
 const ProductsRepository = require("../repositories/products.repository");
+const PetsRepository = require("../repositories/pets.repository");
+const AdoptionsRepository = require("../repositories/adoptions.repository");
 const PasswordResetRepository = require("../repositories/password-reset.repository");
 const OrdersRepository = require("../repositories/orders.repository");
 
@@ -11,6 +13,8 @@ const AuthService = require("../services/auth.service");
 const MailerService = require("../services/mailer.service");
 const PasswordResetService = require("../services/password-reset.service");
 const OrdersService = require("../services/orders.service");
+const PetsService = require("../services/pets.service");
+const AdoptionsService = require("../services/adoptions.service");
 
 const UsersController = require("../controllers/users.controller");
 const CartsController = require("../controllers/carts.controller");
@@ -18,6 +22,8 @@ const ProductsController = require("../controllers/products.controller");
 const AuthController = require("../controllers/auth.controller");
 const PasswordResetController = require("../controllers/password-reset.controller");
 const OrdersController = require("../controllers/orders.controller");
+const PetsController = require("../controllers/pets.controller");
+const AdoptionsController = require("../controllers/adoptions.controller");
 
 class Container {
   #cache = new Map();
@@ -39,6 +45,14 @@ class Container {
 
   get productsRepository() {
     return this.#resolve("productsRepository", () => new ProductsRepository());
+  }
+
+  get petsRepository() {
+    return this.#resolve("petsRepository", () => new PetsRepository());
+  }
+
+  get adoptionsRepository() {
+    return this.#resolve("adoptionsRepository", () => new AdoptionsRepository());
   }
 
   get passwordResetRepository() {
@@ -79,6 +93,17 @@ class Container {
     return this.#resolve(
       "productsService",
       () => new ProductsService(this.productsRepository)
+    );
+  }
+
+  get petsService() {
+    return this.#resolve("petsService", () => new PetsService(this.petsRepository));
+  }
+
+  get adoptionsService() {
+    return this.#resolve(
+      "adoptionsService",
+      () => new AdoptionsService(this.adoptionsRepository, this.usersRepository, this.petsRepository)
     );
   }
 
@@ -144,6 +169,17 @@ class Container {
     return this.#resolve(
       "ordersController",
       () => new OrdersController(this.ordersService)
+    );
+  }
+
+  get petsController() {
+    return this.#resolve("petsController", () => new PetsController(this.petsService));
+  }
+
+  get adoptionsController() {
+    return this.#resolve(
+      "adoptionsController",
+      () => new AdoptionsController(this.adoptionsService)
     );
   }
 }

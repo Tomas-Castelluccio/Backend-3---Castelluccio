@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 
 const firstNames = ["Ana", "Bruno", "Camila", "Diego", "Elena", "Facundo", "Julia", "Mateo"];
 const lastNames = ["García", "Pérez", "López", "Martínez", "Gómez", "Fernández", "Sosa", "Romero"];
-const productNames = ["Teclado", "Mouse", "Monitor", "Auriculares", "Webcam", "Parlante"];
+const petNames = ["Luna", "Milo", "Nala", "Toby", "Mora", "Simba", "Olivia", "Rocky"];
+const petBreeds = ["mestizo", "labrador", "caniche", "siamés", "persa", "beagle"];
+const petSpecies = ["perro", "gato"];
 
 const getRandomItem = (items) => items[Math.floor(Math.random() * items.length)];
 
@@ -23,22 +25,19 @@ const generateUsers = async (quantity) => {
       age: Math.floor(Math.random() * 63) + 18,
       password,
       role: Math.random() < 0.5 ? "user" : "admin",
-      products: [],
+      pets: [],
       __v: 0,
     };
   });
 };
 
-const generateProducts = (quantity) =>
+const generatePets = (quantity) =>
   Array.from({ length: quantity }, (_, index) => ({
-    title: `${getRandomItem(productNames)} de prueba ${index + 1}`,
-    description: `Descripción del producto de prueba ${index + 1}`,
-    price: Number((Math.random() * 1000 + 1).toFixed(2)),
-    thumbnail: [],
-    code: `MOCK-${Date.now()}-${index + 1}`,
-    stock: Math.floor(Math.random() * 100) + 1,
-    category: "mock",
-    status: true,
+    name: getRandomItem(petNames),
+    species: getRandomItem(petSpecies),
+    breed: getRandomItem(petBreeds),
+    age: Math.floor(Math.random() * 15) + 1,
+    adopted: false,
   }));
 
-module.exports = { generateUsers, generateProducts };
+module.exports = { generateUsers, generatePets };

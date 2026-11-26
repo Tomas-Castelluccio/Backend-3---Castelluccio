@@ -27,10 +27,10 @@ passport.use(
 
         const ageNumber = Number(age);
         if (typeof password !== "string" || password.length < 6) {
-          return done(null, false, { message: "password debe tener al menos 6 caracteres" });
+          return done(null, false, { message: "contraseña debe tener al menos 6 caracteres" });
         }
         if (isNaN(ageNumber) || ageNumber < 0) {
-          return done(null, false, { message: "age debe ser un número mayor o igual a 0" });
+          return done(null, false, { message: "la edad debe ser un número mayor o igual a 0" });
         }
 
         const cart = await CartsModel.create({ products: [] });

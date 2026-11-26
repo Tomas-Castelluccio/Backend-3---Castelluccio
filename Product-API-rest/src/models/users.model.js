@@ -40,7 +40,7 @@ const usersSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
-  products: {
+  pets: {
     type: [mongoose.Schema.Types.Mixed],
     default: [],
   },

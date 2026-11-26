@@ -9,6 +9,8 @@ const usersRoutes = require("./src/routes/users.routes");
 const sessionsRoutes = require("./src/routes/sessions.routes");
 const ordersRoutes = require("./src/routes/orders.routes");
 const mocksRouter = require("./src/routes/mocks.router");
+const petsRoutes = require("./src/routes/pets.routes");
+const adoptionRouter = require("./src/routes/adoption.router");
 const container = require("./src/di/container");
 const HealthController = require("./src/controllers/health.controller");
 const { passport } = require("./config/passport");
@@ -53,6 +55,12 @@ app.use((req, res, next) => {
 
 app.get("/api/health", healthController.check);
 app.get("/health", healthController.check);
+app.get("/api-docs/openapi.json", (req, res) => {
+  res.sendFile(path.join(__dirname, "src/docs/users.openapi.json"));
+});
+app.get("/api-docs", (req, res) => {
+  res.sendFile(path.join(__dirname, "src/docs/swagger-ui.html"));
+});
 
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
@@ -60,6 +68,8 @@ app.use("/api/users", usersRoutes);
 app.use("/api/sessions", sessionsRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/mocks", mocksRouter);
+app.use("/api/pets", petsRoutes);
+app.use("/api/adoptions", adoptionRouter);
 
 app.get("/", async (req, res, next) => {
   try {

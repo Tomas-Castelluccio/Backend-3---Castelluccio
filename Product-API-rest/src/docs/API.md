@@ -431,3 +431,9 @@ Estados posibles: `paid` (al comprar), `shipped`, `delivered`, `cancelled`.
 | Solo `admin` gestiona usuarios | `GET`/`POST /api/users`, `PUT` y `DELETE /api/users/:uid` |
 
 - **GET /api/products** y **GET /api/products/:pid**: público.
+
+### Swagger: módulo Users
+
+- Interfaz Swagger UI: `GET /api-docs`
+- Especificación OpenAPI 3: `GET /api-docs/openapi.json`
+- Se documentan `GET /api/users`, `GET /api/users/:uid`, `POST /api/users`, `PUT /api/users/:uid` y `DELETE /api/users/:uid`, con seguridad Bearer JWT, esquemas de datos, permisos por rol y respuestas esperadas.
